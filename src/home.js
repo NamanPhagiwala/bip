@@ -24,6 +24,7 @@ function Home(){
     },[reload])
 
     const fetchData=async(val)=>{
+        showLoader(true)
         if(val){
             page++
         }
