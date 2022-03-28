@@ -10,22 +10,26 @@ const rating = [9,8,7,6,5,4]
 let key= '';
 function Home(){
     const [movieData, setMovieData]= useState()
-    const [load, setLoad]= useState()
+    const [reload, setReload]= useState()
     const [filter, setFilter]= useState(false)
     const [sortedData, setSortedData]= useState()
     const [searchTerm, setSearchTerm]= useState('')
     const [showSearchResult, setSearchResult]= useState(false)
+    const [loader, showLoader]= useState(true)
     const movie = useRef() 
     const navigate= useNavigate()
+   
+    useEffect(()=>{
+        fetchData()
+    },[reload])
+
     const fetchData=async()=>{
         const response = await fetch('https://movie-task.vercel.app/api/popular?page=1');
         const json = await response.json();
         movie.current= json.data.results
         setMovieData(movie.current)
+        showLoader(false)
     }
-    useEffect(()=>{
-        fetchData()
-    },[load])
 
     const updateField=(e)=>{
         setSearchTerm(e.target.value)
@@ -45,6 +49,7 @@ function Home(){
         setFilter(false)
     }
     const searchResults=async()=>{
+        showLoader(true)
         setSearchResult(true)
         setFilter(false)
         const response= await fetch('https://movie-task.vercel.app/api/search?page=1&query='+searchTerm)
@@ -53,8 +58,7 @@ function Home(){
         setMovieData(movie.current)
         key = searchTerm;
         setSearchTerm('')
-        console.log(movie.current)
-
+        showLoader(false)        
     }
 
     const redirectToMov=(id)=>{
@@ -113,7 +117,7 @@ function Home(){
             <Row gutter={{xs: 8, sm: 16, md: 24, lg: 32 }} style={{margin: '2% 4%', color: '#ddd'}}>
             {sortedData.map((x, key)=>
             <Col className="gutter-row" xs={24} sm={8} md={6} lg={4}>
-                <Card hoverable onClick={()=>redirectToMov(x.id)} style={{ width: 240 }} cover={<img alt="example" src={'https://image.tmdb.org/t/p/original/'+x.poster_path} />}>
+                <Card hoverable onClick={()=>redirectToMov(x.id)} style={{ width: 240 }} cover={<img alt="example" src={x.poster_path!== null ? 'https://image.tmdb.org/t/p/original/'+x.poster_path : movieImg} style={{height: '360px'}}/>}>
                 <Meta title={x.original_title} description={'Rating: '+x.vote_average+ ' | Year: '+x.release_date} />
             </Card>
             </Col>
@@ -124,6 +128,11 @@ function Home(){
             </div>
             }
             </main>
+            { loader &&
+              <div className="loader_container">
+                <div className="loader"><img src={require('./loader.gif')} /></div>
+              </div>
+            }
         </div>
     )
 }

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import './movies.scss'
 function Movies(){
     const [movieInfo, setMovieInfo]= useState([])
+    const [loader, showLoader]= useState(true)
     const info = useRef()
     
     const fetchData=async()=>{
@@ -14,7 +15,7 @@ function Movies(){
         const data= await response.json();
         info.current= data
         setMovieInfo(info.current.data)
-        console.log(info.current.data)
+        showLoader(false)        
     }
     useEffect(()=>{
     fetchData()
@@ -36,10 +37,12 @@ function Movies(){
                      )}
             </div>
             <div> <b>Adult: </b>{movieInfo.adult ? "Yes" : 'No'} </div>
-
-
-
             </div>}
+            { loader &&
+              <div className="loader_container">
+                <div className="loader"><img src={require('./loader.gif')} /></div>
+              </div>
+            }
         </div>
     )
 }
