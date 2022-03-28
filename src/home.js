@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import 'antd/dist/antd.css';
-import {  Card, Col, Row } from "antd";
+import {  Button, Card, Col, Row } from "antd";
 import './home.scss'
 import  movieImg from'./movie.jpg'
 import Meta from "antd/lib/card/Meta";
@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 const years = [2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022];
 const rating = [9,8,7,6,5,4]
 let key= '';
+let page= 1;
 function Home(){
     const [movieData, setMovieData]= useState()
     const [reload, setReload]= useState()
@@ -18,16 +19,19 @@ function Home(){
     const [loader, showLoader]= useState(true)
     const movie = useRef() 
     const navigate= useNavigate()
-   
     useEffect(()=>{
         fetchData()
     },[reload])
 
-    const fetchData=async()=>{
-        const response = await fetch('https://movie-task.vercel.app/api/popular?page=1');
+    const fetchData=async(val)=>{
+        if(val){
+            page++
+        }
+        debugger;
+        const response = await fetch('https://movie-task.vercel.app/api/popular?page='+page);
         const json = await response.json();
-        movie.current= json.data.results
-        setMovieData(movie.current)
+        movie.current= json.data.results;
+        val ? setMovieData(prev=>[...prev, ...json.data.results]) : setMovieData(json.data.results)
         showLoader(false)
     }
 
@@ -100,7 +104,8 @@ function Home(){
             </header>
             <main>
             {showSearchResult &&
-             <div style={{fontSize: '20px', fontWeight: '600'}}> {movieData.length!==0 ? 'Showing Results for "'+key+'"' :'No Results found for "'+key+'"'}</div>}
+             <div style={{fontSize: '20px', fontWeight: '600'}}> {movieData.length!==0 ? 'Showing Results for "'+key+'"' :'No Results found for "'+key+'"'}</div>
+            }
             { !filter ?  
            <Row gutter={{xs: 8, sm: 16, md: 24, lg: 32 }} style={{margin: '2% 4%', color: '#ddd'}}>
             {movieData!== undefined && movieData.map((x, key)=>
@@ -126,6 +131,11 @@ function Home(){
             <div>No Data Found, Please select different year or <a onClick={()=>noFilteredData()}>Reset Filter</a></div>
             }
             </div>
+            }
+            { !loader && !filter && !showSearchResult &&
+                <Button onClick={()=>fetchData(true)}>
+                    Load More ....
+                </Button>
             }
             </main>
             { loader &&
