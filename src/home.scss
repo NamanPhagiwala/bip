@@ -1,0 +1,96 @@
+.home{
+  background: #060d17;
+  color: #ddd;
+  height: 100vh;
+    header{
+        display: inline-block;
+        width: 100%;
+        .navBar{
+            margin: 1%;
+            position: relative;
+            float: left;
+            color: #ddd;
+            &-search{
+                float: right;
+                margin: 15px 15px;
+               input{
+                padding: 5px;
+                border: 1px solid lightgrey;
+                border-radius: 10px;}  
+                color: black; 
+            }
+        }
+        .icon{
+            float: left;
+            font-size: 30px;
+            margin: 10px 2%;
+        }
+        .navbar {
+            overflow: hidden;
+          }
+          .navbar a {
+            float: left;
+            font-size: 16px;
+            color: #ddd;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+          }   
+          .year-dropdown, .rating-drop {
+            float: left;
+            overflow: hidden;
+          }  
+          .year-dropdown .dropbtn, .rating-drop .dropbtn {
+            font-size: 16px;  
+            border: none;
+            outline: none;
+            color:#ddd;
+            padding: 14px 16px;
+            background-color: inherit;
+            font-family: inherit;
+            margin: 0;
+          }
+          .navbar a:hover, .year-dropdown:hover .dropbtn ,.rating-drop:hover .dropbtn{
+            background-color: red;
+          }
+          .dropdown-content {
+            display: none;
+            position: absolute;
+            background: rgba(33, 33, 33, 0.9);
+            border-top: 1px solid #F48625;
+            z-index: 5;
+            box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+            width: 10%;
+            float: left;
+          }
+          .dropdown-content a {
+            float: none;
+            color: #ddd;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+            margin: 0 1.65%;
+          }
+          .dropdown-content a:hover {
+            background-color: #ddd;
+          }
+          .year-dropdown:hover .dropdown-content, .rating-drop:hover .dropdown-content {
+            display: block;
+          }
+    }
+    main{
+      background: #060d17;
+    }
+    .primarybtn{
+        border: none;
+        padding: 5px 10px;
+        margin-left: 5px;
+        border-radius: 6px;
+        color: #060d17;
+    }
+    .gutter-row{
+      margin-bottom: 2%;
+      margin-left: 2%;
+    }
+}
